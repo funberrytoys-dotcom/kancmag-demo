@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Icon Pack Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #f472b6, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        .section {
+            margin-bottom: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+        }
+        .icon-item {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .icon-item:hover { transform: scale(1.1); }
+        .icon-item canvas {
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            background: #0f172a;
+        }
+        .icon-label {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        .download-all {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+        .download-all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(99,102,241,0.4);
+        }
+        .actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .hero-portraits { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+        .printer-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        
+        .format-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .format-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .format-btn.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .icon-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Game Icon Pack Generator</h1>
+        <p class="subtitle">Нажми на иконку чтобы скачать PNG. Или скачай весь раздел кнопкой «Скачать все».</p>
+        
+        <!-- Level Buttons -->
+        <div class="section">
+            <h2>🎯 Кнопки уровней (1-20)</h2>
+            <div class="format-toggle">
+                <button class="format-btn active" onclick="setLevelSize(128)">128×128</button>
+                <button class="format-btn" onclick="setLevelSize(256)">256×256</button>
+                <button class="format-btn" onclick="setLevelSize(512)">512×512</button>
+            </div>
+            <div class="icon-grid" id="levelGrid"></div>
+            <div class="actions">
+                <button class="download-all" onclick="downloadAllLevels()">📦 Скачать все уровни (ZIP)</button>
+            </div>
+        </div>
+        
+        <!-- Menu Planks -->
+        <div class="section">
+            <h2>📋 Плашки меню</h2>
+            <div class="icon-grid" id="menuGrid"></div>
+            <div class="actions">
+                <button class="download-all" onclick="downloadAllMenus()">📦 Скачать все плашки (ZIP)</button>
+            </div>
+        </div>
+        
+        <!-- Hero Portraits -->
+        <div class="section">
+            <h2>🦸 Портреты героев</h2>
+            <div class="icon-grid hero-portraits" id="heroGrid"></div>
+            <div class="actions">
+                <button class="download-all" onclick="downloadAllHeroes()">📦 Скачать все портреты (ZIP)</button>
+            </div>
+        </div>
+        
+        <!-- 3D Printer Icons -->
+        <div class="section">
+            <h2>🖨️ Иконки 3D-принтеров</h2>
+            <div class="icon-grid printer-grid" id="printerGrid"></div>
+            <div class="actions">
+                <button class="download-all" onclick="downloadAllPrinters()">📦 Скачать все принтеры (ZIP)</button>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+<script>
+// ========== LEVEL BUTTONS ==========
+let levelSize = 128;
+
+function setLevelSize(size) {
+    levelSize = size;
+    document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderLevels();
+}
+
+function drawLevelButton(canvas, level, size) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = size;
+    canvas.height = size;
+    
+    const s = size;
+    const cx = s/2, cy = s/2;
+    const r = s * 0.42;
+    
+    // Background circle
+    const grad = ctx.createRadialGradient(cx - r*0.3, cy - r*0.3, r*0.1, cx, cy, r);
+    
+    // Color based on level tier
+    let mainColor, darkColor, lightColor;
+    if (level <= 5) {
+        mainColor = '#22c55e'; darkColor = '#15803d'; lightColor = '#86efac';
+    } else if (level <= 10) {
+        mainColor = '#3b82f6'; darkColor = '#1d4ed8'; lightColor = '#93c5fd';
+    } else if (level <= 15) {
+        mainColor = '#a855f7'; darkColor = '#7c3aed'; lightColor = '#d8b4fe';
+    } else {
+        mainColor = '#f59e0b'; darkColor = '#b45309'; lightColor = '#fcd34d';
+    }
+    
+    grad.addColorStop(0, lightColor);
+    grad.addColorStop(0.5, mainColor);
+    grad.addColorStop(1, darkColor);
+    
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    
+    // Border
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = Math.max(2, s/64);
+    ctx.stroke();
+    
+    // Inner highlight
+    ctx.beginPath();
+    ctx.arc(cx, cy - r*0.15, r*0.75, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.lineWidth = Math.max(1, s/128);
+    ctx.stroke();
+    
+    // Stars for completed (simulate 3 stars)
+    const starY = cy + r * 0.55;
+    for (let i = 0; i < 3; i++) {
+        const filled = i < (level % 4 === 0 ? 3 : level % 4);
+        drawStar(ctx, cx + (i-1)*r*0.35, starY, r*0.08, filled ? '#fbbf24' : 'rgba(255,255,255,0.2)');
+    }
+    
+    // Level number
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold ${s*0.35}px "Segoe UI", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    ctx.shadowBlur = s/20;
+    ctx.fillText(level.toString(), cx, cy - r*0.05);
+    ctx.shadowBlur = 0;
+    
+    // Lock icon for levels > 3 (demo)
+    if (level > 3) {
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.font = `${s*0.2}px "Segoe UI"`;
+        ctx.fillText('🔒', cx, cy + r*0.15);
+    }
+}
+
+function drawStar(ctx, x, y, r, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+        const angle = (Math.PI * 2 * i / 5) - Math.PI/2;
+        const px = x + Math.cos(angle) * r;
+        const py = y + Math.sin(angle) * r;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+        
+        const innerAngle = angle + Math.PI/5;
+        const ix = x + Math.cos(innerAngle) * (r*0.4);
+        const iy = y + Math.sin(innerAngle) * (r*0.4);
+        ctx.lineTo(ix, iy);
+    }
+    ctx.closePath();
+    ctx.fill();
+}
+
+function renderLevels() {
+    const grid = document.getElementById('levelGrid');
+    grid.innerHTML = '';
+    for (let i = 1; i <= 20; i++) {
+        const item = document.createElement('div');
+        item.className = 'icon-item';
+        const canvas = document.createElement('canvas');
+        canvas.width = levelSize;
+        canvas.height = levelSize;
+        drawLevelButton(canvas, i, levelSize);
+        canvas.onclick = () => downloadCanvas(canvas, `level_${i}.png`);
+        item.innerHTML = `<canvas width="${levelSize}" height="${levelSize}"></canvas><div class="icon-label">Level ${i}</div>`;
+        item.querySelector('canvas').getContext('2d').drawImage(canvas, 0, 0);
+        // Re-draw properly
+        item.innerHTML = '';
+        const c = document.createElement('canvas');
+        c.width = levelSize; c.height = levelSize;
+        drawLevelButton(c, i, levelSize);
+        c.onclick = () => downloadCanvas(c, `level_${i}_${levelSize}.png`);
+        item.appendChild(c);
+        const lbl = document.createElement('div');
+        lbl.className = 'icon-label';
+        lbl.textContent = `Level ${i}`;
+        item.appendChild(lbl);
+        grid.appendChild(item);
+    }
+}
+
+// ========== MENU PLANKS ==========
+const menuItems = [
+    { text: 'PLAY', color: '#22c55e', icon: '▶' },
+    { text: 'SETTINGS', color: '#6366f1', icon: '⚙' },
+    { text: 'SHOP', color: '#f59e0b', icon: '🛒' },
+    { text: 'PROFILE', color: '#a855f7', icon: '👤' },
+    { text: 'LEADERBOARD', color: '#ef4444', icon: '🏆' },
+    { text: 'ACHIEVEMENTS', color: '#06b6d4', icon: '🏅' },
+    { text: 'DAILY REWARD', color: '#f472b6', icon: '🎁' },
+    { text: 'INVENTORY', color: '#84cc16', icon: '🎒' },
+];
+
+function drawMenuPlank(canvas, item, w, h) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = w;
+    canvas.height = h;
+    
+    const r = h * 0.25;
+    
+    // Background
+    const grad = ctx.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, item.color);
+    grad.addColorStop(1, adjustColor(item.color, -30));
+    
+    roundRect(ctx, 0, 0, w, h, r);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    
+    // Border
+    roundRect(ctx, 0, 0, w, h, r);
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    // Highlight
+    roundRect(ctx, 2, 2, w-4, h*0.4, r*0.8);
+    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+    ctx.fill();
+    
+    // Icon
+    ctx.font = `${h*0.4}px "Segoe UI"`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(item.icon, h*0.35, h/2);
+    
+    // Text
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold ${h*0.28}px "Segoe UI", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    ctx.shadowBlur = 4;
+    ctx.fillText(item.text, w/2 + h*0.1, h/2);
+    ctx.shadowBlur = 0;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y);
+    ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+    ctx.lineTo(x+w, y+h-r);
+    ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    ctx.lineTo(x+r, y+h);
+    ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+    ctx.lineTo(x, y+r);
+    ctx.quadraticCurveTo(x, y, x+r, y);
+    ctx.closePath();
+}
+
+function adjustColor(hex, amount) {
+    const num = parseInt(hex.replace('#', ''), 16);
+    const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+    const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+    const b = Math.min(255, Math.max(0, (num & 0x00FF) + amount));
+    return `rgb(${r},${g},${b})`;
+}
+
+function renderMenus() {
+    const grid = document.getElementById('menuGrid');
+    grid.innerHTML = '';
+    menuItems.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'icon-item';
+        const c = document.createElement('canvas');
+        drawMenuPlank(c, item, 320, 80);
+        c.onclick = () => downloadCanvas(c, `menu_${item.text.toLowerCase().replace(' ', '_')}.png`);
+        itemDiv.appendChild(c);
+        const lbl = document.createElement('div');
+        lbl.className = 'icon-label';
+        lbl.textContent = item.text;
+        itemDiv.appendChild(lbl);
+        grid.appendChild(itemDiv);
+    });
+}
+
+// ========== HERO PORTRAITS ==========
+const heroes = [
+    { name: 'Чико', color: '#fb923c', type: 'fox', bg: '#fef3c7' },
+    { name: 'Медведь', color: '#8b5cf6', type: 'bear', bg: '#ede9fe' },
+    { name: 'Кролик', color: '#f472b6', type: 'rabbit', bg: '#fce7f3' },
+    { name: 'Волк', color: '#3b82f6', type: 'wolf', bg: '#dbeafe' },
+    { name: 'Сова', color: '#a855f7', type: 'owl', bg: '#f3e8ff' },
+    { name: 'Панда', color: '#22c55e', type: 'panda', bg: '#dcfce7' },
+];
+
+function drawHeroPortrait(canvas, hero, s) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = s;
+    canvas.height = s;
+    
+    // Background
+    ctx.fillStyle = hero.bg;
+    ctx.fillRect(0, 0, s, s);
+    
+    // Circle frame
+    const cx = s/2, cy = s/2;
+    const r = s * 0.42;
+    
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = hero.color;
+    ctx.fill();
+    
+    // Face (simplified cartoon)
+    const eyeR = s * 0.07;
+    const eyeY = cy - s*0.05;
+    const eyeX1 = cx - s*0.12;
+    const eyeX2 = cx + s*0.12;
+    
+    // Eyes
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(eyeX1, eyeY, eyeR, 0, Math.PI*2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(eyeX2, eyeY, eyeR, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Pupils
+    ctx.fillStyle = '#1f2937';
+    ctx.beginPath();
+    ctx.arc(eyeX1 + s*0.02, eyeY, eyeR*0.5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(eyeX2 + s*0.02, eyeY, eyeR*0.5, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Nose
+    ctx.fillStyle = '#1f2937';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + s*0.08, s*0.04, s*0.03, 0, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Smile
+    ctx.strokeStyle = '#1f2937';
+    ctx.lineWidth = Math.max(2, s/64);
+    ctx.beginPath();
+    ctx.arc(cx, cy + s*0.06, s*0.12, 0.2, Math.PI - 0.2);
+    ctx.stroke();
+    
+    // Ears
+    if (hero.type === 'fox' || hero.type === 'rabbit' || hero.type === 'wolf') {
+        ctx.fillStyle = hero.color;
+        // Left ear
+        ctx.beginPath();
+        ctx.ellipse(cx - s*0.2, cy - s*0.35, s*0.08, s*0.18, -0.3, 0, Math.PI*2);
+        ctx.fill();
+        // Right ear
+        ctx.beginPath();
+        ctx.ellipse(cx + s*0.2, cy - s*0.35, s*0.08, s*0.18, 0.3, 0, Math.PI*2);
+        ctx.fill();
+    }
+    
+    // Border
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = s/32;
+    ctx.stroke();
+    
+    // Name
+    ctx.fillStyle = '#1f2937';
+    ctx.font = `bold ${s*0.12}px "Segoe UI", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(hero.name, cx, s - s*0.08);
+}
+
+function renderHeroes() {
+    const grid = document.getElementById('heroGrid');
+    grid.innerHTML = '';
+    heroes.forEach(hero => {
+        const item = document.createElement('div');
+        item.className = 'icon-item';
+        const c = document.createElement('canvas');
+        drawHeroPortrait(c, hero, 256);
+        c.onclick = () => downloadCanvas(c, `hero_${hero.name.toLowerCase()}.png`);
+        item.appendChild(c);
+        const lbl = document.createElement('div');
+        lbl.className = 'icon-label';
+        lbl.textContent = hero.name;
+        item.appendChild(lbl);
+        grid.appendChild(item);
+    });
+}
+
+// ========== 3D PRINTER ICONS ==========
+const printers = [
+    { name: 'FDM Basic', color: '#64748b', type: 'fdm' },
+    { name: 'FDM Pro', color: '#3b82f6', type: 'fdm_pro' },
+    { name: 'Resin', color: '#a855f7', type: 'resin' },
+    { name: 'Laser', color: '#ef4444', type: 'laser' },
+    { name: 'Multi-Mat', color: '#22c55e', type: 'multi' },
+    { name: 'Industrial', color: '#f59e0b', type: 'industrial' },
+];
+
+function drawPrinter(canvas, printer, w, h) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = w;
+    canvas.height = h;
+    
+    const s = Math.min(w, h);
+    const unit = s / 10;
+    
+    // Background
+    ctx.fillStyle = '#f1f5f9';
+    roundRect(ctx, 0, 0, w, h, unit);
+    ctx.fill();
+    
+    // Printer body
+    const px = w*0.15, py = h*0.2;
+    const pw = w*0.7, ph = h*0.5;
+    
+    ctx.fillStyle = printer.color;
+    roundRect(ctx, px, py, pw, ph, unit*0.5);
+    ctx.fill();
+    
+    // Printer body highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    roundRect(ctx, px, py, pw, ph*0.3, unit*0.5);
+    ctx.fill();
+    
+    // Screen
+    ctx.fillStyle = '#0f172a';
+    roundRect(ctx, px + pw*0.1, py + ph*0.15, pw*0.3, ph*0.25, unit*0.2);
+    ctx.fill();
+    
+    // Screen text
+    ctx.fillStyle = '#22d3ee';
+    ctx.font = `bold ${unit*0.8}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText('100%', px + pw*0.25, py + ph*0.32);
+    
+    // Nozzle / Laser head
+    ctx.fillStyle = '#1f2937';
+    ctx.beginPath();
+    ctx.arc(w/2, py + ph*0.6, unit*0.6, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Bed
+    ctx.fillStyle = '#94a3b8';
+    roundRect(ctx, w*0.2, py + ph*0.75, w*0.6, h*0.08, unit*0.2);
+    ctx.fill();
+    
+    // Print object on bed
+    if (printer.type === 'fdm' || printer.type === 'fdm_pro') {
+        ctx.fillStyle = '#fbbf24';
+        ctx.fillRect(w*0.35, py + ph*0.65, w*0.12, h*0.1);
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillRect(w*0.48, py + ph*0.6, w*0.12, h*0.15);
+    }
+    
+    // Status LED
+    ctx.beginPath();
+    ctx.arc(px + pw*0.85, py + ph*0.25, unit*0.3, 0, Math.PI*2);
+    ctx.fillStyle = '#22c55e';
+    ctx.fill();
+    ctx.shadowColor = '#22c55e';
+    ctx.shadowBlur = 8;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    
+    // Name
+    ctx.fillStyle = '#1f2937';
+    ctx.font = `bold ${unit*0.9}px "Segoe UI", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(printer.name, w/2, h - unit*1.2);
+    
+    // Border
+    roundRect(ctx, 0, 0, w, h, unit);
+    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+function renderPrinters() {
+    const grid = document.getElementById('printerGrid');
+    grid.innerHTML = '';
+    printers.forEach(printer => {
+        const item = document.createElement('div');
+        item.className = 'icon-item';
+        const c = document.createElement('canvas');
+        drawPrinter(c, printer, 200, 200);
+        c.onclick = () => downloadCanvas(c, `printer_${printer.name.toLowerCase().replace(' ', '_')}.png`);
+        item.appendChild(c);
+        const lbl = document.createElement('div');
+        lbl.className = 'icon-label';
+        lbl.textContent = printer.name;
+        item.appendChild(lbl);
+        grid.appendChild(item);
+    });
+}
+
+// ========== UTILS ==========
+function downloadCanvas(canvas, filename) {
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+}
+
+async function downloadAllLevels() {
+    const zip = new JSZip();
+    const folder = zip.folder('level_buttons');
+    for (let i = 1; i <= 20; i++) {
+        const c = document.createElement('canvas');
+        drawLevelButton(c, i, levelSize);
+        const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+        folder.file(`level_${i}_${levelSize}.png`, blob);
+    }
+    const content = await zip.generateAsync({type: 'blob'});
+    saveAs(content, `level_buttons_${levelSize}.zip`);
+}
+
+async function downloadAllMenus() {
+    const zip = new JSZip();
+    const folder = zip.folder('menu_planks');
+    menuItems.forEach(item => {
+        const c = document.createElement('canvas');
+        drawMenuPlank(c, item, 320, 80);
+        c.toBlob(blob => {
+            folder.file(`menu_${item.text.toLowerCase().replace(' ', '_')}.png`, blob);
+        }, 'image/png');
+    });
+    // Small delay for blob generation
+    await new Promise(r => setTimeout(r, 500));
+    const content = await zip.generateAsync({type: 'blob'});
+    saveAs(content, 'menu_planks.zip');
+}
+
+async function downloadAllHeroes() {
+    const zip = new JSZip();
+    const folder = zip.folder('hero_portraits');
+    heroes.forEach(hero => {
+        const c = document.createElement('canvas');
+        drawHeroPortrait(c, hero, 256);
+        c.toBlob(blob => {
+            folder.file(`hero_${hero.name.toLowerCase()}.png`, blob);
+        }, 'image/png');
+    });
+    await new Promise(r => setTimeout(r, 500));
+    const content = await zip.generateAsync({type: 'blob'});
+    saveAs(content, 'hero_portraits.zip');
+}
+
+async function downloadAllPrinters() {
+    const zip = new JSZip();
+    const folder = zip.folder('printer_icons');
+    printers.forEach(printer => {
+        const c = document.createElement('canvas');
+        drawPrinter(c, printer, 200, 200);
+        c.toBlob(blob => {
+            folder.file(`printer_${printer.name.toLowerCase().replace(' ', '_')}.png`, blob);
+        }, 'image/png');
+    });
+    await new Promise(r => setTimeout(r, 500));
+    const content = await zip.generateAsync({type: 'blob'});
+    saveAs(content, 'printer_icons.zip');
+}
+
+// Init
+renderLevels();
+renderMenus();
+renderHeroes();
+renderPrinters();
+</script>
+</body>
+</html>
