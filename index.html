@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KANCMAG - Канцелярские товары в СПб</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <span class="logo-icon">&#9999;&#65039;</span>
+                <span class="logo-text">KANCMAG</span>
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">&#9776;</button>
+            <div class="nav-links" id="navLinks">
+                <a href="#catalog">Каталог</a>
+                <a href="#about">О нас</a>
+                <a href="#delivery">Доставка</a>
+                <a href="#contacts">Контакты</a>
+                <button class="cart-btn" onclick="toggleCart()">
+                    &#128722; Корзина
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <span class="badge">&#128230; Более 5000 товаров в наличии</span>
+                    <h1>Канцелярские товары<br>с доставкой по СПб</h1>
+                    <p class="hero-desc">Школа, офис, творчество - все для учебы и работы. Закажите сейчас, доставим за 2 часа!</p>
+                    <div class="hero-btns">
+                        <a href="#catalog" class="btn btn-primary">Смотреть каталог</a>
+                        <a href="https://t.me/kancmag_demo_bot" target="_blank" class="btn btn-outline">&#128172; Написать в Telegram</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-num">2ч</span>
+                            <span class="stat-label">Доставка</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-num">5000+</span>
+                            <span class="stat-label">Товаров</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-num">4.9&#9733;</span>
+                            <span class="stat-label">Рейтинг</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-card fc1">&#128396;&#65039; Ручки Premium</div>
+                    <div class="floating-card fc2">&#128211; Ежедневники</div>
+                    <div class="floating-card fc3">&#127912; Для творчества</div>
+                    <div class="hero-image">
+                        <div class="image-placeholder">
+                            <span style="font-size:6rem">&#128221;</span>
+                            <p>Канцелярские товары</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-us">
+        <div class="container">
+            <h2 class="section-title">Почему выбирают нас</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">&#9889;</div>
+                    <h3>Быстрая доставка</h3>
+                    <p>2 часа по СПб. Курьер или самовывоз из 5 точек.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">&#128176;</div>
+                    <h3>Оптовые цены</h3>
+                    <p>Чем больше берете - тем выгоднее. Скидки от 10 шт.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">&#129302;</div>
+                    <h3>AI-помощник</h3>
+                    <p>Наш бот отвечает 24/7. Найдет товар, скажет наличие, оформит заказ.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">&#127873;</div>
+                    <h3>Подарки</h3>
+                    <p>К каждому заказу от 3000 руб - набор стикеров или ручка.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="catalog" id="catalog">
+        <div class="container">
+            <h2 class="section-title">Каталог товаров</h2>
+            <div class="catalog-filters">
+                <button class="filter-btn active" onclick="filterCatalog('all')">Все</button>
+                <button class="filter-btn" onclick="filterCatalog('pens')">Ручки</button>
+                <button class="filter-btn" onclick="filterCatalog('paper')">Бумага</button>
+                <button class="filter-btn" onclick="filterCatalog('school')">Школа</button>
+                <button class="filter-btn" onclick="filterCatalog('art')">Творчество</button>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <span class="badge">О компании</span>
+                    <h2>KANCMAG - 8 лет на рынке СПб</h2>
+                    <p>Мы начинали с маленького магазина на Невском. Сегодня - сеть из 5 точек и интернет-магазин с доставкой по всему городу.</p>
+                    <p>Работаем с школами, офисами и частными клиентами. Для крупных заказов - персональный менеджер и специальные условия.</p>
+                    <div class="about-stats">
+                        <div class="about-stat">
+                            <span>8</span>
+                            <p>Лет на рынке</p>
+                        </div>
+                        <div class="about-stat">
+                            <span>5</span>
+                            <p>Магазинов</p>
+                        </div>
+                        <div class="about-stat">
+                            <span>50K+</span>
+                            <p>Клиентов</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder" style="height:400px">
+                        <span style="font-size:5rem">&#127978;</span>
+                        <p>Наш магазин</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="delivery" id="delivery">
+        <div class="container">
+            <h2 class="section-title">Доставка и оплата</h2>
+            <div class="delivery-grid">
+                <div class="delivery-card">
+                    <div class="delivery-icon">&#128666;</div>
+                    <h3>Курьером</h3>
+                    <p>2 часа по СПб</p>
+                    <span class="price-tag">350 руб</span>
+                </div>
+                <div class="delivery-card">
+                    <div class="delivery-icon">&#128230;</div>
+                    <h3>Самовывоз</h3>
+                    <p>5 точек в городе</p>
+                    <span class="price-tag free">Бесплатно</span>
+                </div>
+                <div class="delivery-card">
+                    <div class="delivery-icon">&#128666;</div>
+                    <h3>По ЛО</h3>
+                    <p>Доставка 1-2 дня</p>
+                    <span class="price-tag">500 руб</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contacts" id="contacts">
+        <div class="container">
+            <div class="contacts-grid">
+                <div class="contacts-info">
+                    <h2>Свяжитесь с нами</h2>
+                    <p>Закажите обратный звонок или напишите в мессенджер - ответим за 5 минут.</p>
+                    <div class="contact-item">
+                        <span class="contact-icon">&#128241;</span>
+                        <div>
+                            <strong>Телефон</strong>
+                            <p>+7 (812) 555-44-33</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">&#128205;</span>
+                        <div>
+                            <strong>Адрес</strong>
+                            <p>СПб, Невский пр., д. 100</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">&#128172;</span>
+                        <div>
+                            <strong>Telegram</strong>
+                            <p>@kancmag_demo_bot</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-btn">VK</a>
+                        <a href="#" class="social-btn">TG</a>
+                        <a href="#" class="social-btn">WA</a>
+                    </div>
+                </div>
+                <div class="contacts-form">
+                    <form onsubmit="handleForm(event)">
+                        <input type="text" placeholder="Ваше имя" required>
+                        <input type="tel" placeholder="Телефон" required>
+                        <textarea placeholder="Что нужно?" rows="3"></textarea>
+                        <button type="submit" class="btn btn-primary w-full">Заказать звонок</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="logo" style="color:white;margin-bottom:1rem">
+                        <span class="logo-icon">&#9999;&#65039;</span>
+                        <span class="logo-text">KANCMAG</span>
+                    </div>
+                    <p style="opacity:0.7">Канцелярские товары с доставкой по Санкт-Петербургу</p>
+                </div>
+                <div>
+                    <h4>Каталог</h4>
+                    <a href="#">Ручки и карандаши</a>
+                    <a href="#">Бумага и блокноты</a>
+                    <a href="#">Школьные товары</a>
+                    <a href="#">Для творчества</a>
+                </div>
+                <div>
+                    <h4>Клиентам</h4>
+                    <a href="#">Доставка</a>
+                    <a href="#">Оплата</a>
+                    <a href="#">Возврат</a>
+                    <a href="#">Оптовикам</a>
+                </div>
+                <div>
+                    <h4>Контакты</h4>
+                    <p style="opacity:0.7">+7 (812) 555-44-33</p>
+                    <p style="opacity:0.7">info@kancmag.ru</p>
+                    <p style="opacity:0.7">Пн-Пт: 9:00 - 21:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 KANCMAG. Сделано с помощью AI</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h3>&#128722; Корзина</h3>
+            <button onclick="toggleCart()">&#10005;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="cart-empty">Корзина пуста</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Итого:</span>
+                <strong id="cartTotal">0 руб</strong>
+            </div>
+            <button class="btn btn-primary w-full" onclick="checkout()">Оформить заказ</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
